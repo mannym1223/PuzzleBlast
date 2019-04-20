@@ -2,6 +2,7 @@ package edu.utep.cs.cs4330.puzzleblast;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -12,12 +13,14 @@ public class GameGrid{
 
     private static List<Square> squares;
     private static int gridSize;
+    private static int maxInitValues; // prevent too many values for squares at once
     private SquareGridAdapter adapter;
     private Context context;
 
     private GameGrid() {
         gridSize = 4;
         squares = new ArrayList<>();
+        maxInitValues = 4;
     }
 
     private static final GameGrid INSTANCE = new GameGrid();
@@ -29,18 +32,27 @@ public class GameGrid{
 
 
 
-    public void initSquares() {
+    public synchronized void initSquares() {
         Thread thread = new Thread(() -> {
-
-            List<Square> newList = new ArrayList<>();
-
+            int count = 0;
             for(int row = 0; row < gridSize;row++) {
                 for(int col = 0; col < gridSize;col++) {
-                    Square square = new Square(row, col, randomValue());
-                    squares.add(square);
+                    int random = randomValue();
+                    Log.d("random value", String.valueOf(random));
+                    if(row != 0 && col != 0 || count == maxInitValues) {
+                        //don't create values in middle of grid
+                        Square square = new Square(row, col, 0, findImage(0));
+                        squares.add(square);
+                    }
+                    else {
+                        Square square = new Square(row, col, random, findImage(random));
+                        squares.add(square);
+                    }
+                    if(random != 0) {
+                        count++;
+                    }
                 }
             }
-            squares = newList;
             Activity act = (Activity)context;
             act.runOnUiThread(() -> {
                 adapter.notifyDataSetChanged();
@@ -48,6 +60,20 @@ public class GameGrid{
             Log.d("init square", "finished making list");
         });
         thread.start();
+    }
+
+    private synchronized Drawable findImage(int value) {
+        Drawable img;
+
+        switch (value) {
+            case 3:
+                img = context.getDrawable(R.drawable.green_square_3);
+                break;
+            default:
+                img = context.getDrawable(R.drawable.green_square);
+        }
+
+        return img;
     }
 
     public void setAdapter(SquareGridAdapter adapt) {
@@ -64,6 +90,6 @@ public class GameGrid{
 
     private int randomValue() {
         Random rand = new Random();
-        return rand.nextInt(1) *2;
+        return rand.nextInt(2) *3;
     }
 }
