@@ -18,6 +18,7 @@
         android:textSize="24sp" />
 
     <GridView
+        android:id="@+id/boardView"
         android:layout_width="@dimen/grid_width"
         android:layout_height="@dimen/grid_height"
         android:layout_gravity="center"
@@ -26,6 +27,6 @@
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="30dp"
         android:gravity="center"
-        android:numColumns="4"/>
+        android:numColumns="4" />
 
 </LinearLayout>
