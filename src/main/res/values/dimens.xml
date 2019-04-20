@@ -2,4 +2,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="grid_width">350dp</dimen>
     <dimen name="grid_height">350dp</dimen>
+    <dimen name="square_padding">10dp</dimen>
 </resources>
