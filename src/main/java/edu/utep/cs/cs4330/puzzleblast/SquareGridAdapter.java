@@ -33,7 +33,12 @@ public class SquareGridAdapter extends ArrayAdapter{
         }
 
         ImageView img = squareView.findViewById(R.id.squareImage);
-        img.setImageDrawable(context.getDrawable(R.drawable.green_square));
+        if(squares.size() != 0) {
+            img.setImageDrawable(squares.get(position).getImage());
+        }
+        else {
+            img.setImageDrawable(context.getDrawable(R.drawable.green_square));
+        }
 
         Log.d("adapter", "finished with view");
         return squareView;
