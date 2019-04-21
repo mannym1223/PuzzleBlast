@@ -88,7 +88,7 @@ public class GameGrid{
         return squares;
     }
 
-    private int randomValue() {
+    private int randomValue() {//
         Random rand = new Random();
         return rand.nextInt(2) *3;
     }
