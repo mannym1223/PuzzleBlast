@@ -20,7 +20,7 @@ public class GameGrid{
     private GameGrid() {
         gridSize = 4;
         squares = new ArrayList<>();
-        maxInitValues = 10;
+        maxInitValues = 5;
     }
 
     private static final GameGrid INSTANCE = new GameGrid();
