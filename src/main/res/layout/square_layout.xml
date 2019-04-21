@@ -11,5 +11,6 @@
         android:adjustViewBounds="true"
         android:padding="@dimen/square_padding"
         android:scaleType="centerInside"
-        android:visibility="visible" />
+        android:visibility="visible"
+        android:clickable="false"/>
 </FrameLayout>
