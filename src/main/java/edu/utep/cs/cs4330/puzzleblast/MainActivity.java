@@ -1,5 +1,6 @@
 package edu.utep.cs.cs4330.puzzleblast;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private GameGrid grid;
     private SquareGridAdapter gridAdapter;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,13 @@ public class MainActivity extends AppCompatActivity {
         grid.setAdapter(gridAdapter);
         board.setAdapter(gridAdapter);
         gridAdapter.notifyDataSetChanged();
+
+        board.setOnTouchListener(new SwipeListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                grid.shiftLeft();
+            }
+        });
     }
 
     @Override
