@@ -28,6 +28,7 @@
         android:layout_marginBottom="30dp"
         android:gravity="center"
         android:numColumns="4"
-        android:background="@color/colorGridBackground"/>
+        android:background="@color/colorGridBackground"
+        android:clickable="true"/>
 
 </LinearLayout>
