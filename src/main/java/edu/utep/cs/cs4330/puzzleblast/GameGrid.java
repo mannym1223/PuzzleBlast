@@ -39,7 +39,7 @@ public class GameGrid{
                 for(int col = 0; col < gridSize;col++) {
                     int random = randomValue();
                     Log.d("random value", String.valueOf(random));
-                    if((row != 0 && col != 0) && (row != gridSize-1 && col != gridSize-1) || count == maxInitValues) {
+                    if((row != 0 && col != 0) && (row != gridSize-1 && col != gridSize-1) || count < maxInitValues) {
                         //don't create values in middle of grid
                         Square square = new Square(row, col, 0, findImage(0));
                         squares.add(square);
@@ -53,6 +53,7 @@ public class GameGrid{
                     }
                 }
             }
+            maxInitValues = 2;
             Activity act = (Activity)context;
             act.runOnUiThread(() -> {
                 adapter.notifyDataSetChanged();
@@ -81,31 +82,54 @@ public class GameGrid{
 
     public synchronized void shiftLeft() {
         Thread thread = new Thread(() -> {
-            for(int index = 1; index < squares.size();index++) {
-                if(squares.get(index).getCol() == 0) {
-                    continue;
+            for(int index = 0; index < squares.size()-1;index++) {
+                Square startSquare = squares.get(index);
+                int targetVal = startSquare.getValue();
+
+                int incrIndex = index+1;
+                int row = index / gridSize;
+                Square addSquare = squares.get(incrIndex);
+                if(targetVal == 0) {
+                    while (incrIndex/gridSize == row && incrIndex < squares.size()) {
+                        if (addSquare.getValue() != 0) {
+                            startSquare.setValue(addSquare.getValue());
+                            startSquare.setImage(findImage(addSquare.getValue()));
+                            addSquare.setValue(0);
+                            addSquare.setImage(findImage(0));
+                            break;
+                        }
+                        addSquare = squares.get(incrIndex);
+                        incrIndex++;
+                    }
+
                 }
-                int endpoint = index - (index%gridSize);
-                Square movingSquare = squares.get(index);
-                Square endSquare = squares.get(endpoint);
-                if(endSquare.getValue() == 0) {
-                    squares.set(endpoint, movingSquare);
-                    squares.set(index, new Square(movingSquare.getRow(), movingSquare.getCol(),
-                            0, findImage(0)));
-                    movingSquare.setRow(endSquare.getRow());
-                    movingSquare.setCol(endSquare.getCol());
+                else if(addSquare.getValue() == 0){
+                    while (incrIndex/gridSize == row && incrIndex < squares.size()) {
+                        if (addSquare.getValue() == targetVal) {
+                            startSquare.setValue(targetVal * 3);
+                            startSquare.setImage(findImage(startSquare.getValue()));
+                            addSquare.setValue(0);
+                            addSquare.setImage(findImage(0));
+                            break;
+                        }
+
+                        addSquare = squares.get(incrIndex);
+                        incrIndex++;
+                    }
                 }
-                else if (endSquare.getValue() == movingSquare.getValue()){
-                    squares.set(endpoint, movingSquare);
-                    squares.set(index, new Square(movingSquare.getRow(), movingSquare.getCol(),
-                            0, findImage(0)));
-                    movingSquare.setRow(endSquare.getRow());
-                    movingSquare.setCol(endSquare.getCol());
-                    movingSquare.setValue(movingSquare.getValue()*3);
-                    movingSquare.setImage(findImage(movingSquare.getValue()));
+                else if(addSquare.getValue() == targetVal) {
+                    startSquare.setValue(targetVal * 3);
+                    startSquare.setImage(findImage(targetVal *3));
+                    addSquare.setValue(0);
+                    addSquare.setImage(findImage(0));
                 }
             }
-
+            addSquares();
+            //for debugging
+            for(int i =0;i < squares.size();i++) {
+                Log.d(" Printing squares", " " + String.valueOf(squares.get(i).getValue()) + squares.get(i).getRow() +
+                        String.valueOf(squares.get(i).getCol()));
+            }
 
             Activity act = (Activity)context;
             act.runOnUiThread(() -> {
@@ -118,29 +142,25 @@ public class GameGrid{
     }
 
     private synchronized void addSquares() {
-        Thread thread = new Thread(() -> {
-            int count = 0;
-            for(int row = 0; row < gridSize;row++) {
-                for(int col = 0; col < gridSize;col++) {
-                    Square square = squares.get((row+col)*gridSize);
-                    if(square.getValue() != 0) {
-                        continue;
-                    }
-                    int random = randomValue();
-                    Log.d("random value", String.valueOf(random));
-                    if(row != 0 && col != 0 || count == maxInitValues) {
-                        //don't create values in middle of grid
-                    }
-                    else {
-                    }
-                    if(random != 0) {
-                        count++;
-                    }
-                }
+        int count = 0;
+        Random rand = new Random();
+        for(int index = 0;index < squares.size();index+= rand.nextInt(4)) {
+            Square square = squares.get(index);
+            if(square.getValue() != 0) {
+                continue;
             }
-            Log.d("add squares", "finished adding squares");
-        });
-        thread.start();
+            int random = randomValue();
+            Log.d("random value", String.valueOf(random));
+            if(count < maxInitValues) {
+                //don't create values in middle of grid
+                square.setValue(random);
+                square.setImage(findImage(random));
+            }
+            if(random != 0) {
+                count++;
+            }
+        }
+        Log.d("add squares", "finished adding squares");
     }
 
     public void setAdapter(SquareGridAdapter adapt) {
