@@ -80,7 +80,6 @@ public class GameGrid{
         return img;
     }
 
-    //FIXME: first shift only moves by one column
     public synchronized void shiftLeft() {
         Thread thread = new Thread(() -> {
             for(int index = 0; index < squares.size()-1;index++) {
@@ -92,6 +91,7 @@ public class GameGrid{
                 Square addSquare = squares.get(incrIndex);
                 if(targetVal == 0) {
                     while (incrIndex/gridSize == row && incrIndex < squares.size()) {
+                        addSquare = squares.get(incrIndex);
                         if (addSquare.getValue() != 0) {
                             startSquare.setValue(addSquare.getValue());
                             startSquare.setImage(findImage(addSquare.getValue()));
@@ -99,13 +99,15 @@ public class GameGrid{
                             addSquare.setImage(findImage(0));
                             break;
                         }
-                        addSquare = squares.get(incrIndex);
                         incrIndex++;
+
+
                     }
 
                 }
                 else if(addSquare.getValue() == 0){
                     while (incrIndex/gridSize == row && incrIndex < squares.size()) {
+                        addSquare = squares.get(incrIndex);
                         if (addSquare.getValue() == targetVal) {
                             startSquare.setValue(targetVal * 3);
                             startSquare.setImage(findImage(startSquare.getValue()));
@@ -113,9 +115,9 @@ public class GameGrid{
                             addSquare.setImage(findImage(0));
                             break;
                         }
-
-                        addSquare = squares.get(incrIndex);
                         incrIndex++;
+
+
                     }
                 }
                 else if(addSquare.getValue() == targetVal) {
