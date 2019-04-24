@@ -17,6 +17,8 @@ public class GameGrid{
     private SquareGridAdapter adapter;
     private Context context;
 
+    private static final int GAME_INCREMENT = 2;//base number for the game
+
     private GameGrid() {
         gridSize = 4;
         squares = new ArrayList<>();
@@ -67,11 +69,26 @@ public class GameGrid{
         Drawable img;
 
         switch (value) {
+            case 2:
+                img = context.getDrawable(R.drawable.green_square_2);
+                break;
             case 3:
                 img = context.getDrawable(R.drawable.green_square_3);
                 break;
+            case 4:
+                img = context.getDrawable(R.drawable.green_square_4);
+                break;
+            case 8:
+                img = context.getDrawable(R.drawable.green_square_8);
+                break;
             case 9:
                 img = context.getDrawable(R.drawable.green_square_9);
+                break;
+            case 16:
+                img = context.getDrawable(R.drawable.green_square_16);
+                break;
+            case 32:
+                img = context.getDrawable(R.drawable.green_square_32);
                 break;
             default:
                 img = context.getDrawable(R.drawable.green_square);
@@ -109,7 +126,7 @@ public class GameGrid{
                     while (incrIndex/gridSize == row && incrIndex < squares.size()) {
                         addSquare = squares.get(incrIndex);
                         if (addSquare.getValue() == targetVal) {
-                            startSquare.setValue(targetVal * 3);
+                            startSquare.setValue(targetVal * GAME_INCREMENT);
                             startSquare.setImage(findImage(startSquare.getValue()));
                             addSquare.setValue(0);
                             addSquare.setImage(findImage(0));
@@ -121,8 +138,8 @@ public class GameGrid{
                     }
                 }
                 else if(addSquare.getValue() == targetVal) {
-                    startSquare.setValue(targetVal * 3);
-                    startSquare.setImage(findImage(targetVal *3));
+                    startSquare.setValue(targetVal * GAME_INCREMENT);
+                    startSquare.setImage(findImage(targetVal * GAME_INCREMENT));
                     addSquare.setValue(0);
                     addSquare.setImage(findImage(0));
                 }
@@ -130,7 +147,8 @@ public class GameGrid{
             addSquares();
             //for debugging
             for(int i =0;i < squares.size();i++) {
-                Log.d(" Printing squares", " " + String.valueOf(squares.get(i).getValue()) + squares.get(i).getRow() +
+                Log.d(" Printing left", " " + String.valueOf(squares.get(i).getValue())
+                        + squares.get(i).getRow() +
                         String.valueOf(squares.get(i).getCol()));
             }
 
@@ -139,6 +157,66 @@ public class GameGrid{
                 adapter.notifyDataSetChanged();
             });
             Log.d("shift left", "finished shifting left");
+
+        });
+        thread.start();
+    }
+
+    public synchronized void shiftRight() {
+        Thread thread = new Thread(() -> {
+            for(int index = squares.size()-1; index > 0;index--) {
+                Square startSquare = squares.get(index);
+                int targetVal = startSquare.getValue();
+
+                int incrIndex = index-1;
+                int row = index / gridSize;
+                Square addSquare = squares.get(incrIndex);
+                if(targetVal == 0) {
+                    while (incrIndex/gridSize == row && incrIndex >= 0) {
+                        addSquare = squares.get(incrIndex);
+                        if (addSquare.getValue() != 0) {
+                            startSquare.setValue(addSquare.getValue());
+                            startSquare.setImage(findImage(addSquare.getValue()));
+                            addSquare.setValue(0);
+                            addSquare.setImage(findImage(0));
+                            break;
+                        }
+                        incrIndex--;
+                    }
+                }
+                else if(addSquare.getValue() == 0){
+                    while (incrIndex/gridSize == row && incrIndex >= 0) {
+                        addSquare = squares.get(incrIndex);
+                        if (addSquare.getValue() == targetVal) {
+                            startSquare.setValue(targetVal * GAME_INCREMENT);
+                            startSquare.setImage(findImage(startSquare.getValue()));
+                            addSquare.setValue(0);
+                            addSquare.setImage(findImage(0));
+                            break;
+                        }
+                        incrIndex--;
+                    }
+                }
+                else if(addSquare.getValue() == targetVal) {
+                    startSquare.setValue(targetVal * GAME_INCREMENT);
+                    startSquare.setImage(findImage(targetVal * GAME_INCREMENT));
+                    addSquare.setValue(0);
+                    addSquare.setImage(findImage(0));
+                }
+            }
+            addSquares();
+            //for debugging
+            for(int i =0;i < squares.size();i++) {
+                Log.d(" Printing right", " " + String.valueOf(squares.get(i).getValue())
+                        + squares.get(i).getRow() +
+                        String.valueOf(squares.get(i).getCol()));
+            }
+
+            Activity act = (Activity)context;
+            act.runOnUiThread(() -> {
+                adapter.notifyDataSetChanged();
+            });
+            Log.d("shift right", "finished shifting right");
 
         });
         thread.start();
@@ -180,6 +258,6 @@ public class GameGrid{
 
     private int randomValue() {
         Random rand = new Random();
-        return rand.nextInt(2) *3;
+        return rand.nextInt(2) * GAME_INCREMENT;
     }
 }
