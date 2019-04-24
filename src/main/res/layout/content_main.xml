@@ -13,7 +13,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Swipe left or right"
+        android:text="Swipe board in any direction. Try to reach the max."
         android:textAlignment="center"
         android:textSize="24sp" />
 
