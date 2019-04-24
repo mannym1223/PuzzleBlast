@@ -80,6 +80,7 @@ public class GameGrid{
         return img;
     }
 
+    //FIXME: first shift only moves by one column
     public synchronized void shiftLeft() {
         Thread thread = new Thread(() -> {
             for(int index = 0; index < squares.size()-1;index++) {
