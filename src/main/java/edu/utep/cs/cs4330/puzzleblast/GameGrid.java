@@ -297,10 +297,6 @@ public class GameGrid{
     }
 
     public synchronized void shiftDown() {
-        if(isFilled()) {
-            showToast(context, "Board is full");
-            return;
-        }
         Thread thread = new Thread(() -> {
             for(int index = squares.size()-1; index >= gridSize;index--) {
                 Square startSquare = squares.get(index);
