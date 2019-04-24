@@ -31,4 +31,12 @@
         android:background="@color/colorGridBackground"
         android:clickable="true"/>
 
+    <TextView
+        android:id="@+id/sensorText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sensor Direction"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
 </LinearLayout>
