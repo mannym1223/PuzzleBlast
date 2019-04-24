@@ -49,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
             public void onSwipeLeft() {
                 grid.shiftLeft();
             }
+
+            @Override
+            public void onSwipeRight() {
+                grid.shiftRight();
+            }
         });
     }
 
