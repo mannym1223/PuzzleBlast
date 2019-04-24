@@ -20,7 +20,6 @@ public class GameTiltDetect implements SensorEventListener {
     private float roll;
 
     public GameTiltDetect(Context context){
-
         sensorManager = (SensorManager) context.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
 
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
