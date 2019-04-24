@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,8 @@ public class GameGrid{
     private static int maxInitValues; // prevent too many values for squares at once
     private SquareGridAdapter adapter;
     private Context context;
+    private static int filledSpaces;
+
 
     private static final int GAME_INCREMENT = 2;//base number for the game
 
@@ -23,6 +26,7 @@ public class GameGrid{
         gridSize = 4;
         squares = new ArrayList<>();
         maxInitValues = 5;
+        filledSpaces = 0;
     }
 
     private static final GameGrid INSTANCE = new GameGrid();
@@ -52,10 +56,11 @@ public class GameGrid{
                     }
                     if(random != 0) {
                         count++;
+                        filledSpaces++;
                     }
                 }
             }
-            maxInitValues = 2;
+            maxInitValues = 3;
             Activity act = (Activity)context;
             act.runOnUiThread(() -> {
                 adapter.notifyDataSetChanged();
@@ -69,6 +74,9 @@ public class GameGrid{
         Drawable img;
 
         switch (value) {
+            case 0:
+                img = context.getDrawable(R.drawable.green_square);
+                break;
             case 2:
                 img = context.getDrawable(R.drawable.green_square_2);
                 break;
@@ -91,10 +99,19 @@ public class GameGrid{
                 img = context.getDrawable(R.drawable.green_square_32);
                 break;
             default:
-                img = context.getDrawable(R.drawable.green_square);
+                img = context.getDrawable(R.drawable.green_square_max);
         }
 
         return img;
+    }
+
+    private boolean isFilled() {
+        if(filledSpaces == gridSize * gridSize) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public synchronized void shiftLeft() {
@@ -114,13 +131,11 @@ public class GameGrid{
                             startSquare.setImage(findImage(addSquare.getValue()));
                             addSquare.setValue(0);
                             addSquare.setImage(findImage(0));
+                            filledSpaces--;
                             break;
                         }
                         incrIndex++;
-
-
                     }
-
                 }
                 else if(addSquare.getValue() == 0){
                     while (incrIndex/gridSize == row && incrIndex < squares.size()) {
@@ -130,11 +145,10 @@ public class GameGrid{
                             startSquare.setImage(findImage(startSquare.getValue()));
                             addSquare.setValue(0);
                             addSquare.setImage(findImage(0));
+                            filledSpaces--;
                             break;
                         }
                         incrIndex++;
-
-
                     }
                 }
                 else if(addSquare.getValue() == targetVal) {
@@ -142,6 +156,7 @@ public class GameGrid{
                     startSquare.setImage(findImage(targetVal * GAME_INCREMENT));
                     addSquare.setValue(0);
                     addSquare.setImage(findImage(0));
+                    filledSpaces--;
                 }
             }
             addSquares();
@@ -222,6 +237,128 @@ public class GameGrid{
         thread.start();
     }
 
+    public synchronized void shiftUp() {
+        Thread thread = new Thread(() -> {
+            for(int index = 0; index < squares.size()-gridSize;index++) {
+                Square startSquare = squares.get(index);
+                int targetVal = startSquare.getValue();
+
+                int incrIndex = index+gridSize;
+                Square addSquare = squares.get(incrIndex);
+                if(targetVal == 0) {
+                    while (incrIndex < gridSize*gridSize) {
+                        addSquare = squares.get(incrIndex);
+                        if (addSquare.getValue() != 0) {
+                            startSquare.setValue(addSquare.getValue());
+                            startSquare.setImage(findImage(addSquare.getValue()));
+                            addSquare.setValue(0);
+                            addSquare.setImage(findImage(0));
+                            break;
+                        }
+                        incrIndex+=gridSize;
+                    }
+                }
+                else if(addSquare.getValue() == 0){
+                    while (incrIndex < gridSize*gridSize) {
+                        addSquare = squares.get(incrIndex);
+                        if (addSquare.getValue() == targetVal) {
+                            startSquare.setValue(targetVal * GAME_INCREMENT);
+                            startSquare.setImage(findImage(startSquare.getValue()));
+                            addSquare.setValue(0);
+                            addSquare.setImage(findImage(0));
+                            break;
+                        }
+                        incrIndex+=gridSize;
+                    }
+                }
+                else if(addSquare.getValue() == targetVal) {
+                    startSquare.setValue(targetVal * GAME_INCREMENT);
+                    startSquare.setImage(findImage(targetVal * GAME_INCREMENT));
+                    addSquare.setValue(0);
+                    addSquare.setImage(findImage(0));
+                }
+            }
+            addSquares();
+            //for debugging
+            for(int i =0;i < squares.size();i++) {
+                Log.d(" Printing up", " " + String.valueOf(squares.get(i).getValue())
+                        + squares.get(i).getRow() +
+                        String.valueOf(squares.get(i).getCol()));
+            }
+
+            Activity act = (Activity)context;
+            act.runOnUiThread(() -> {
+                adapter.notifyDataSetChanged();
+            });
+            Log.d("shift up", "finished shifting up");
+
+        });
+        thread.start();
+    }
+
+    public synchronized void shiftDown() {
+        if(isFilled()) {
+            showToast(context, "Board is full");
+            return;
+        }
+        Thread thread = new Thread(() -> {
+            for(int index = squares.size()-1; index >= gridSize;index--) {
+                Square startSquare = squares.get(index);
+                int targetVal = startSquare.getValue();
+
+                int incrIndex = index-gridSize;
+                Square addSquare = squares.get(incrIndex);
+                if(targetVal == 0) {
+                    while (incrIndex >= 0) {
+                        addSquare = squares.get(incrIndex);
+                        if (addSquare.getValue() != 0) {
+                            startSquare.setValue(addSquare.getValue());
+                            startSquare.setImage(findImage(addSquare.getValue()));
+                            addSquare.setValue(0);
+                            addSquare.setImage(findImage(0));
+                            break;
+                        }
+                        incrIndex-=gridSize;
+                    }
+                }
+                else if(addSquare.getValue() == 0){
+                    while (incrIndex >= 0) {
+                        addSquare = squares.get(incrIndex);
+                        if (addSquare.getValue() == targetVal) {
+                            startSquare.setValue(targetVal * GAME_INCREMENT);
+                            startSquare.setImage(findImage(startSquare.getValue()));
+                            addSquare.setValue(0);
+                            addSquare.setImage(findImage(0));
+                            break;
+                        }
+                        incrIndex-=gridSize;
+                    }
+                }
+                else if(addSquare.getValue() == targetVal) {
+                    startSquare.setValue(targetVal * GAME_INCREMENT);
+                    startSquare.setImage(findImage(targetVal * GAME_INCREMENT));
+                    addSquare.setValue(0);
+                    addSquare.setImage(findImage(0));
+                }
+            }
+            addSquares();
+            //for debugging
+            for(int i =0;i < squares.size();i++) {
+                Log.d(" Printing down", " " + String.valueOf(squares.get(i).getValue())
+                        + squares.get(i).getRow() +
+                        String.valueOf(squares.get(i).getCol()));
+            }
+
+            Activity act = (Activity)context;
+            act.runOnUiThread(() -> {
+                adapter.notifyDataSetChanged();
+            });
+            Log.d("shift down", "finished shifting down");
+
+        });
+        thread.start();
+    }
+
     private synchronized void addSquares() {
         int count = 0;
         Random rand = new Random();
@@ -239,6 +376,7 @@ public class GameGrid{
             }
             if(random != 0) {
                 count++;
+                filledSpaces++;
             }
         }
         Log.d("add squares", "finished adding squares");
@@ -259,5 +397,9 @@ public class GameGrid{
     private int randomValue() {
         Random rand = new Random();
         return rand.nextInt(2) * GAME_INCREMENT;
+    }
+
+    public void showToast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 }
