@@ -12,6 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.concurrent.Callable;
 
@@ -63,6 +66,34 @@ public class MainActivity extends AppCompatActivity {
                 grid.shiftDown();
             }
         });
+
+        TextView sensText = findViewById(R.id.sensorText);
+        GameTiltDetect tiltDetect = new GameTiltDetect(this) {
+            @Override
+            public void onLeftTilt() {
+                sensText.setText("Left");
+                //grid.shiftLeft();
+            }
+            @Override
+            public void onRightTilt() {
+                sensText.setText("Right");
+                //grid.shiftLeft();
+            }
+            @Override
+            public void onUpTilt() {
+                sensText.setText("Up");
+                //grid.shiftUp();
+            }
+            @Override
+            public void onDownTilt() {
+                sensText.setText("Down");
+                //grid.shiftDown();
+            }
+            @Override
+            public void onCentered() {
+                sensText.setText("Centered");
+            }
+        };
     }
 
     @Override
