@@ -25,6 +25,7 @@ public class GameTimer {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeRemaining = millisUntilFinished;
+                updateGameTimerText();
             }
 
             @Override
