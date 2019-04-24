@@ -58,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
             public void onSwipeUp() {
                 grid.shiftUp();
             }
+            @Override
+            public void onSwipeDown() {
+                grid.shiftDown();
+            }
         });
     }
 
