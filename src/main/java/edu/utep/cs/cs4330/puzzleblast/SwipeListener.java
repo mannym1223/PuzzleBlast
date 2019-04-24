@@ -51,7 +51,7 @@ public class SwipeListener implements View.OnTouchListener {
             //up and down
             else if(Math.abs(distanceX) < Math.abs(distanceY) && Math.abs(distanceY)
                     > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                if(distanceY > 0) {
+                if(distanceY < 0) {
                     onSwipeUp();
                 }
                 else {
