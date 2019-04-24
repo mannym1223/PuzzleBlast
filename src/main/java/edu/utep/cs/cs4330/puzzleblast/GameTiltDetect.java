@@ -92,10 +92,19 @@ public class GameTiltDetect implements SensorEventListener {
             grid.shiftRight();
         }
 
+        else if(degrPitch > 45){
+            Log.d("Tilt", "UpTilt");
+            grid.shiftUp();
+        }
+
+        else if(degrPitch < -45){
+            Log.d("Tilt", "DownTilt");
+            grid.shiftDown();
+        }
+
         else{
             Log.d("Tilt", "Center");
         }
-
     }
 
 
