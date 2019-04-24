@@ -18,11 +18,11 @@ public class GameTiltDetect implements SensorEventListener {
     private float azimuth;
     private float pitch;
     private float roll;
-    private GameGrid gameGrid;
+    private GameGrid grid;
 
     public GameTiltDetect(Context context){
-        gameGrid = new GameGrid();
-
+        grid = GameGrid.getInstance();
+        
         sensorManager = (SensorManager) context.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -85,11 +85,11 @@ public class GameTiltDetect implements SensorEventListener {
 
         if (degrRoll < -45) {
             Log.d("Tilt", "LeftTilt");
-            gameGrid.shiftLeft();
+            grid.shiftLeft();
         }
         else if (degrRoll > 45) {
             Log.d("Tilt", "RightTilt");
-            gameGrid.shiftRight();
+            grid.shiftRight();
         }
 
         else{
