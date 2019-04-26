@@ -106,21 +106,21 @@ public class GameTiltDetect implements SensorEventListener {
             Log.d("Tilt", "Faulty Reading:");
         }
         else if ((degrPitch > 30) && Math.abs(degrPitch - degrPitch_last) > 30){
-            Log.d("Tilt", "UpTilt:" + degrPitch);
+            Log.d("Tilt", "UpTilt: " + degrPitch);
             grid.shiftUp();
         }
         else if ((degrPitch < -30) && Math.abs(degrPitch - degrPitch_last) > 30){
-            Log.d("Tilt", "DowntTilt" + degrPitch);
+            Log.d("Tilt", "DowntTilt: " + degrPitch);
             grid.shiftDown();
         }
 
         else if((degrRoll < -30) && Math.abs(degrRoll - degrRoll_last) > 30){
-            Log.d("Tilt", "LeftTilt" + degrRoll);
+            Log.d("Tilt", "LeftTilt: " + degrRoll);
             grid.shiftLeft();
         }
 
         else if((degrRoll > 30) && Math.abs(degrRoll - degrRoll_last) > 30){
-            Log.d("Tilt", "RightTilt" + degrRoll);
+            Log.d("Tilt", "RightTilt: " + degrRoll);
             grid.shiftRight();
         }
 
