@@ -68,26 +68,26 @@ public class MainActivity extends AppCompatActivity {
         });
 
         TextView sensText = findViewById(R.id.sensorText);
-        GameTiltDetect tiltDetect = new GameTiltDetect(this) {
+        new GameTiltDetect(this) {
             @Override
             public void onLeftTilt() {
                 sensText.setText("Left");
-                //grid.shiftLeft();
+                grid.shiftLeft();
             }
             @Override
             public void onRightTilt() {
                 sensText.setText("Right");
-                //grid.shiftLeft();
+                grid.shiftLeft();
             }
             @Override
             public void onUpTilt() {
                 sensText.setText("Up");
-                //grid.shiftUp();
+                grid.shiftUp();
             }
             @Override
             public void onDownTilt() {
                 sensText.setText("Down");
-                //grid.shiftDown();
+                grid.shiftDown();
             }
             @Override
             public void onCentered() {
