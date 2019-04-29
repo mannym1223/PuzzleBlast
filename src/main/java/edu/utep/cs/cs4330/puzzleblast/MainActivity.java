@@ -1,6 +1,7 @@
 package edu.utep.cs.cs4330.puzzleblast;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,7 +22,9 @@ import java.util.concurrent.Callable;
 public class MainActivity extends AppCompatActivity {
 
     private GameGrid grid;
+    private GameDBHelper helper;
     private SquareGridAdapter gridAdapter;
+    private GameTimer timer;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -30,29 +33,37 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> Snackbar.make(view,
-                "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
+        fab.setOnClickListener(view -> {
+            Snackbar.make(view,
+                    "Opening High Score Activity", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            Intent scoreIntent = new Intent(this, HighScoreActivity.class);
+            startActivity(scoreIntent);
+        });
 
         GridView board = findViewById(R.id.boardView);
+        timer = new GameTimer(120000, findViewById(R.id.scoreText));
+        helper = new GameDBHelper(this);
 
         grid = GameGrid.getInstance();
         grid.initSquares();
         grid.setContext(this);
+        grid.setHelper(helper);
+        grid.setTimer(timer);
 
         gridAdapter = new SquareGridAdapter(this);
         grid.setAdapter(gridAdapter);
         board.setAdapter(gridAdapter);
         gridAdapter.notifyDataSetChanged();
 
+
+
         board.setOnTouchListener(new SwipeListener(this) {
             @Override
             public void onSwipeLeft() {
                 grid.shiftLeft();
             }
-
             @Override
             public void onSwipeRight() {
                 grid.shiftRight();
@@ -94,6 +105,20 @@ public class MainActivity extends AppCompatActivity {
                 sensText.setText("Centered");
             }
         };
+        timer.startGameTimer();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer.pauseTimer();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        timer.resumeTimer();
     }
 
     @Override
