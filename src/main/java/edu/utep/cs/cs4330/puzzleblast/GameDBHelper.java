@@ -61,7 +61,7 @@ public class GameDBHelper extends SQLiteOpenHelper {
             minIdInDb = cursor.getLong(cursor.getColumnIndex(COLUMN_ID));
         }
 
-        if(getCount() == 12 && score > minScoreInDb) {
+        if(getCount() == 10 && score > minScoreInDb) {
             delete(minIdInDb);
             values.put(COLUMN_SCORE, score);
         }
