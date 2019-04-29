@@ -15,8 +15,12 @@ public class GameGrid{
     private static List<Square> squares;
     private static int gridSize;
     private static int maxInitValues; // prevent too many values for squares at once
+    private static int maxValue;
+    private static boolean maxReached;
     private SquareGridAdapter adapter;
     private Context context;
+    private GameDBHelper helper;
+    private GameTimer timer;
     private static int filledSpaces;
 
 
@@ -27,6 +31,8 @@ public class GameGrid{
         squares = new ArrayList<>();
         maxInitValues = 5;
         filledSpaces = 0;
+        maxValue = 64;
+        maxReached = false;
     }
 
     private static final GameGrid INSTANCE = new GameGrid();
@@ -172,7 +178,7 @@ public class GameGrid{
                 adapter.notifyDataSetChanged();
             });
             Log.d("shift left", "finished shifting left");
-
+            reachedMax();
         });
         thread.start();
     }
@@ -232,7 +238,7 @@ public class GameGrid{
                 adapter.notifyDataSetChanged();
             });
             Log.d("shift right", "finished shifting right");
-
+            reachedMax();
         });
         thread.start();
     }
@@ -291,7 +297,7 @@ public class GameGrid{
                 adapter.notifyDataSetChanged();
             });
             Log.d("shift up", "finished shifting up");
-
+            reachedMax();
         });
         thread.start();
     }
@@ -350,9 +356,25 @@ public class GameGrid{
                 adapter.notifyDataSetChanged();
             });
             Log.d("shift down", "finished shifting down");
-
+            reachedMax();
         });
         thread.start();
+    }
+
+    private synchronized boolean reachedMax() {
+        for (int index = 0; index < gridSize * gridSize; index++) {
+            if (squares.get(index).getValue() == maxValue) {
+                maxReached = true;
+                addScore();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addScore() {
+        timer.pauseTimer();
+        helper.addScore(timer.getTimeRemaining());
     }
 
     private synchronized void addSquares() {
@@ -386,8 +408,19 @@ public class GameGrid{
         this.context = context;
     }
 
+    public void setHelper(GameDBHelper help) {
+        helper = help;
+    }
+
+    public void setTimer(GameTimer time) {
+        timer = time;
+    }
+
     public List<Square> getSquares() {
         return squares;
+    }
+    public boolean maxIsReached() {
+        return maxReached;
     }
 
     private int randomValue() {
