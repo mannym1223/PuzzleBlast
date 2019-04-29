@@ -17,21 +17,22 @@ public class GameTimer {
     private TextView timerText;
     private static final long GAME_TIME_INTERVAL = 1000;
 
-    public GameTimer(long startTime, TextView text) {
+    GameTimer(long startTime, TextView text) {
         this.startTime = startTime;
         this.timeRemaining = startTime;
         timerText = text;
     }
 
 
-    public void startGameTimer(){
+    void startGameTimer(){
         countDownTimer = new CountDownTimer(timeRemaining, GAME_TIME_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
-                timeRemaining = millisUntilFinished;
-                updateGameTimerText();
+                if (isRunning) {
+                    timeRemaining = millisUntilFinished;
+                    updateGameTimerText();
+                }
             }
-
             @Override
             public void onFinish() {
                 isRunning = false;
@@ -52,14 +53,17 @@ public class GameTimer {
     }
 
     public void pauseTimer(){
-        countDownTimer.cancel();
+        //countDownTimer.cancel();
         isRunning = false;
+    }
+
+    public void resumeTimer() {
+        isRunning = true;
     }
 
     public void resetTimer(){
         timeRemaining = startTime;
         updateGameTimerText();
-
     }
 
     public void setTimer(long timer){
