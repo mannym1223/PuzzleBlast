@@ -17,6 +17,21 @@
         android:textAlignment="center"
         android:textSize="24sp" />
 
+    <TextView
+        android:id="@+id/timerTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Time Remaining:"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/scoreText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
     <GridView
         android:id="@+id/boardView"
         android:layout_width="@dimen/grid_width"
