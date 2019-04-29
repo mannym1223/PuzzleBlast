@@ -56,11 +56,6 @@ public class GameTimer {
         isRunning = false;
     }
 
-    public void resumeTimer() {
-        countDownTimer.start();
-        isRunning = true;
-    }
-
     public void resetTimer(){
         timeRemaining = startTime;
         updateGameTimerText();
