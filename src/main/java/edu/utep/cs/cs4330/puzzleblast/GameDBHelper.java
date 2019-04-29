@@ -56,17 +56,22 @@ public class GameDBHelper extends SQLiteOpenHelper {
         long minScoreInDb = cursor.getLong(cursor.getColumnIndex(COLUMN_SCORE));
         long minIdInDb = cursor.getLong(cursor.getColumnIndex(COLUMN_ID));
 
+        Log.d("score", Long.toString(minScoreInDb));
 
-        if(getCount() == 12 && score > minScoreInDb) {
+        if(getCount() == 10 && score > minScoreInDb) {
             delete(minIdInDb);
             values.put(COLUMN_SCORE, score);
+            long id = db.insert(TABLE_GAME, null, values);
+        }
+
+        else if (getCount() < 10){
+            values.put(COLUMN_SCORE, score);
+            long id = db.insert(TABLE_GAME, null, values);
         }
 
         else{
-            values.put(COLUMN_SCORE, score);
-        }
 
-        long id = db.insert(TABLE_GAME, null, values);
+        }
 
         db.close();
     }
