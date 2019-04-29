@@ -362,6 +362,9 @@ public class GameGrid{
     }
 
     private synchronized boolean reachedMax() {
+        if(maxReached) {
+            return true;
+        }
         for (int index = 0; index < gridSize * gridSize; index++) {
             if (squares.get(index).getValue() == maxValue) {
                 maxReached = true;
