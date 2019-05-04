@@ -34,8 +34,9 @@ public class SquareGridAdapter extends ArrayAdapter{
         }
 
         ImageView img = squareView.findViewById(R.id.squareImage);
+        //animation
         Animation anim = squares.get(position).getAnim();
-
+        
         if(squares.size() != 0) {
             img.setImageDrawable(squares.get(position).getImage());
             if(anim != null){
