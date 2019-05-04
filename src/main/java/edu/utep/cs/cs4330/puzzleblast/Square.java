@@ -9,6 +9,7 @@ public class Square {
     private int col;
     private int value;
     private Drawable image;
+    //animation
     private Animation expandAnim;
 
     public Square(int startRow, int startCol, int startValue, Drawable img) {
@@ -17,15 +18,15 @@ public class Square {
         col=startCol;
         image = img;
     }
-
+    //animation
     public Animation getAnim(){
         return expandAnim;
     }
-
+    //animation
     public void setAnim(Animation anim){
         this.expandAnim = anim;
     }
-
+    //animation
     public void removeAnim(){
         this.expandAnim = null;
     }
