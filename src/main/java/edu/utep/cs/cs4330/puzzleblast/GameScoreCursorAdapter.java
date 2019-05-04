@@ -1,4 +1,4 @@
-package cs4330.cs.utep.dbtest;
+package edu.utep.cs.cs4330.puzzleblast;
 
 import android.content.Context;
 import android.database.Cursor;

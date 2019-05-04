@@ -1,4 +1,4 @@
-package cs4330.cs.utep.dbtest;
+package edu.utep.cs.cs4330.puzzleblast;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,7 +14,7 @@ import java.util.List;
 public class GameDBHelper extends SQLiteOpenHelper {
 
     private static final int DB_VERSION = 1;
-    private static final String DB_NAME = "highScore.db";
+    private static final String DB_NAME = "highScoredb";
 
     public static final String TABLE_GAME = "gameScores";
     public static final String COLUMN_TIMESTAMP = "timeStamp";
@@ -46,32 +46,31 @@ public class GameDBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void addScore(long score) {
+    public synchronized void addScore(long score) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         Cursor cursor = db.query(TABLE_GAME, new String[]{"*"}, COLUMN_SCORE + " = " + "(SELECT MIN(" + COLUMN_SCORE + ") FROM " + TABLE_GAME + ")", null, null, null, null);
 
         cursor.moveToFirst();
 
-        long minScoreInDb = cursor.getLong(cursor.getColumnIndex(COLUMN_SCORE));
-        long minIdInDb = cursor.getLong(cursor.getColumnIndex(COLUMN_ID));
+        long minScoreInDb = 0;
+        long minIdInDb = 0;
 
-        Log.d("score", Long.toString(minScoreInDb));
+        if(getCount() != 0) {
+            minScoreInDb = cursor.getLong(cursor.getColumnIndex(COLUMN_SCORE));
+            minIdInDb = cursor.getLong(cursor.getColumnIndex(COLUMN_ID));
+        }
 
         if(getCount() == 10 && score > minScoreInDb) {
             delete(minIdInDb);
             values.put(COLUMN_SCORE, score);
-            long id = db.insert(TABLE_GAME, null, values);
-        }
-
-        else if (getCount() < 10){
-            values.put(COLUMN_SCORE, score);
-            long id = db.insert(TABLE_GAME, null, values);
         }
 
         else{
-
+            values.put(COLUMN_SCORE, score);
         }
+
+        db.insert(TABLE_GAME, null, values);
 
         db.close();
     }

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
@@ -33,8 +34,14 @@ public class SquareGridAdapter extends ArrayAdapter{
         }
 
         ImageView img = squareView.findViewById(R.id.squareImage);
+        Animation anim = squares.get(position).getAnim();
+
         if(squares.size() != 0) {
             img.setImageDrawable(squares.get(position).getImage());
+            if(anim != null){
+                img.startAnimation(anim);
+                squares.get(position).removeAnim();
+            }
         }
         else {
             img.setImageDrawable(context.getDrawable(R.drawable.green_square));

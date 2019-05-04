@@ -1,4 +1,4 @@
-package cs4330.cs.utep.dbtest;
+package edu.utep.cs.cs4330.puzzleblast;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -23,14 +23,9 @@ public class HighScoreActivity extends AppCompatActivity {
         cursor = gameDBHelper.allScores();
 
 
-        new Handler().post(new Runnable() {
-
-            @Override
-            public void run() {
-                gameScoreCursorAdapter = new GameScoreCursorAdapter(HighScoreActivity.this, cursor);
-                listView.setAdapter(gameScoreCursorAdapter);
-            }
-
+        new Handler().post(() -> {
+            gameScoreCursorAdapter = new GameScoreCursorAdapter(HighScoreActivity.this, cursor);
+            listView.setAdapter(gameScoreCursorAdapter);
         });
 
 

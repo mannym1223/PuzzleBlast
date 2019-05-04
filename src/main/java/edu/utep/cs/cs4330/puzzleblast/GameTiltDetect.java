@@ -1,14 +1,11 @@
-package cs4330.cs.utep.testaccelerometer;
+package edu.utep.cs.cs4330.puzzleblast;
 
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class GameTiltDetect implements SensorEventListener {
@@ -87,13 +84,8 @@ public class GameTiltDetect implements SensorEventListener {
 
     }
 
-    public void pause(){
-        sensorManager.unregisterListener(this);
-    }
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 
     public void determineTilt(float roll, float roll_last, float pitch, float pitch_last) {
@@ -107,29 +99,46 @@ public class GameTiltDetect implements SensorEventListener {
         }
         else if ((degrPitch > 30) && Math.abs(degrPitch - degrPitch_last) > 30){
             Log.d("Tilt", "UpTilt: " + degrPitch);
-            grid.shiftUp();
+            onUpTilt();
         }
         else if ((degrPitch < -30) && Math.abs(degrPitch - degrPitch_last) > 30){
             Log.d("Tilt", "DowntTilt: " + degrPitch);
-            grid.shiftDown();
+            onDownTilt();
         }
 
         else if((degrRoll < -30) && Math.abs(degrRoll - degrRoll_last) > 30){
             Log.d("Tilt", "LeftTilt: " + degrRoll);
-            grid.shiftLeft();
+            onLeftTilt();
         }
 
         else if((degrRoll > 30) && Math.abs(degrRoll - degrRoll_last) > 30){
             Log.d("Tilt", "RightTilt: " + degrRoll);
-            grid.shiftRight();
+            onRightTilt();
         }
 
         else{
             Log.d("Tilt", "Center");
+            onCentered();
         }
 
     }
 
+    public void onLeftTilt() {
 
+    }
+
+    public void onRightTilt() {
+
+    }
+    public void onUpTilt() {
+
+    }
+
+    public void onDownTilt() {
+
+    }
+    public void onCentered() {
+
+    }
 
 }

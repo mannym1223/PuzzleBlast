@@ -1,8 +1,10 @@
-package cs4330.cs.utep.puzzletest;
+package edu.utep.cs.cs4330.puzzleblast;
 
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.Locale;
 
@@ -12,22 +14,25 @@ public class GameTimer {
     private long timeRemaining;
     private long startTime;
     private boolean isRunning;
+    private TextView timerText;
     private static final long GAME_TIME_INTERVAL = 1000;
 
-    public GameTimer(long startTime) {
+    GameTimer(long startTime, TextView text) {
         this.startTime = startTime;
         this.timeRemaining = startTime;
+        timerText = text;
     }
 
 
-    public void startGameTimer(){
+    void startGameTimer(){
         countDownTimer = new CountDownTimer(timeRemaining, GAME_TIME_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
-                timeRemaining = millisUntilFinished;
-                updateGameTimerText();
+                if (isRunning) {
+                    timeRemaining = millisUntilFinished;
+                    updateGameTimerText();
+                }
             }
-
             @Override
             public void onFinish() {
                 isRunning = false;
@@ -43,25 +48,28 @@ public class GameTimer {
         int minutes = (int) (timeRemaining / 1000) / 60;
         int seconds = (int) (timeRemaining / 1000) % 60;
 
-        String timerText = String.format(Locale.getDefault(), "%02d:02d", minutes, seconds);
+        timerText.setText(String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds));
 
     }
 
-    private void pauseTimer(){
-        countDownTimer.cancel();
+    public void pauseTimer(){
+        //countDownTimer.cancel();
         isRunning = false;
     }
 
-    private void resetTimer(){
+    public void resumeTimer() {
+        isRunning = true;
+    }
+
+    public void resetTimer(){
         timeRemaining = startTime;
         updateGameTimerText();
-
     }
 
-    private void setTimer(long timer){
-
-
+    public void setTimer(long timer){
     }
 
-
+    public long getTimeRemaining() {
+        return timeRemaining;
+    }
 }
