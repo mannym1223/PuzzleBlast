@@ -397,7 +397,7 @@ public class GameGrid{
                 //don't create values in middle of grid
                 square.setValue(random);
                 square.setImage(findImage(random));
-
+                //animation
                 if(random != 0){
                     square.setAnim(expandAnim);
                 }
@@ -419,6 +419,7 @@ public class GameGrid{
 
     public void setContext(Context context) {
         this.context = context;
+        //animation
         expandAnim = AnimationUtils.loadAnimation(context, R.anim.animation_pop);
     }
 
