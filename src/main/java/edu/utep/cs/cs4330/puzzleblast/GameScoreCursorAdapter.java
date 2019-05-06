@@ -17,7 +17,6 @@ public class GameScoreCursorAdapter extends CursorAdapter {
         super(context, cursor, 0);
     }
 
-
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         return LayoutInflater.from(context).inflate(R.layout.score_layout, parent, false);

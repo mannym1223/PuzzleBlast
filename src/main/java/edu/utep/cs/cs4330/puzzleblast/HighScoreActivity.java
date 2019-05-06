@@ -22,13 +22,9 @@ public class HighScoreActivity extends AppCompatActivity {
 
         cursor = gameDBHelper.allScores();
 
-
         new Handler().post(() -> {
             gameScoreCursorAdapter = new GameScoreCursorAdapter(HighScoreActivity.this, cursor);
             listView.setAdapter(gameScoreCursorAdapter);
         });
-
-
-
     }
 }

@@ -6,10 +6,6 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import java.util.List;
-
 
 public class GameDBHelper extends SQLiteOpenHelper {
 
@@ -20,7 +16,6 @@ public class GameDBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TIMESTAMP = "timeStamp";
     public static final String COLUMN_SCORE = "score";
     public static final String COLUMN_ID = "_id";
-
 
     public GameDBHelper(Context context){
         super(context, DB_NAME, null, DB_VERSION);
@@ -34,7 +29,6 @@ public class GameDBHelper extends SQLiteOpenHelper {
                 COLUMN_SCORE + " INTEGER NOT NULL, " +
                 COLUMN_TIMESTAMP + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" + ");";
 
-
         sqLiteDatabase.execSQL(table);
 
     }
@@ -44,7 +38,6 @@ public class GameDBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_GAME);
         onCreate(sqLiteDatabase);
     }
-
 
     public synchronized void addScore(long score) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -89,12 +82,10 @@ public class GameDBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-
     public void delete(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_GAME, COLUMN_ID + " = ?", new String[] { Long.toString(id) } );
     }
-
 
     public void deleteAll(){
         SQLiteDatabase db = this.getWritableDatabase();

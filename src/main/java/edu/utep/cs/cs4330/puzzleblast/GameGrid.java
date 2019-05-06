@@ -26,7 +26,6 @@ public class GameGrid{
     private static int filledSpaces;
     private Animation expandAnim;
 
-
     private static final int GAME_INCREMENT = 2;//base number for the game
 
     private GameGrid() {
@@ -40,12 +39,9 @@ public class GameGrid{
 
     private static final GameGrid INSTANCE = new GameGrid();
 
-
     public static GameGrid getInstance() {
         return INSTANCE;
     }
-
-
 
     public synchronized void initSquares() {
         Thread thread = new Thread(() -> {
