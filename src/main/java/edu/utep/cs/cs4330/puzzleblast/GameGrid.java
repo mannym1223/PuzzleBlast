@@ -128,6 +128,14 @@ public class GameGrid{
         return img;
     }
 
+    public void setEasyMode() {
+        maxValue = 128;
+    }
+
+    public void setNormalMode() {
+        maxValue = 2048;
+    }
+
     private boolean isFilled() {
         if(filledSpaces == gridSize * gridSize) {
             return true;

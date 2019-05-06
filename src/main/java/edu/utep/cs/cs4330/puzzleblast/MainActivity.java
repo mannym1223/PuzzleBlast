@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -142,10 +143,21 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.easy_mode) {
+            grid.setEasyMode();
+            showToast("Easy mode set");
+            return true;
+        }
+        if (id == R.id.normal_mode) {
+            grid.setNormalMode();
+            showToast("Normal mode set");
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 }
