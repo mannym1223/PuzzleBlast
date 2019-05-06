@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.animation.Animation;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class GameGrid{
         squares = new ArrayList<>();
         maxInitValues = 5;
         filledSpaces = 0;
-        maxValue = 64;
+        maxValue = 2048;
         maxReached = false;
     }
 
