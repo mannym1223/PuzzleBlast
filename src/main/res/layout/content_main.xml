@@ -5,23 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginBottom="30dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Swipe board in any direction. Try to reach the max."
-        android:textAlignment="center"
-        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/timerTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Time Remaining:"
+        android:layout_marginTop="15dp"
         android:textAlignment="center"
         android:textSize="18sp" />
 
@@ -30,7 +24,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:text = "00:00"
         android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/playButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/textColor"
+        android:text="Play" />
 
     <GridView
         android:id="@+id/boardView"
@@ -38,13 +42,12 @@
         android:layout_height="@dimen/grid_height"
         android:layout_gravity="center"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
-        android:gravity="center"
-        android:numColumns="4"
+        android:layout_marginBottom="15dp"
         android:background="@color/colorGridBackground"
-        android:clickable="true"/>
+        android:gravity="center"
+        android:numColumns="4" />
 
     <TextView
         android:id="@+id/sensorText"
