@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private GameDBHelper helper;
     private SquareGridAdapter gridAdapter;
     private GameTimer timer;
+    private Button playButton;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -43,7 +45,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         GridView board = findViewById(R.id.boardView);
+
+        playButton = findViewById(R.id.playButton);
+
         timer = new GameTimer(120000, findViewById(R.id.scoreText));
+
+        playButton.setOnClickListener(v -> timer.startGameTimer());
+
         helper = new GameDBHelper(this);
 
         grid = GameGrid.getInstance();
@@ -56,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         grid.setAdapter(gridAdapter);
         board.setAdapter(gridAdapter);
         gridAdapter.notifyDataSetChanged();
-
 
 
         board.setOnTouchListener(new SwipeListener(this) {
@@ -105,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
                 sensText.setText("Centered");
             }
         };
-        timer.startGameTimer();
 
     }
 
@@ -139,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 }
