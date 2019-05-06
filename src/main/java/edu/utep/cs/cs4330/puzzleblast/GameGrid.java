@@ -34,7 +34,7 @@ public class GameGrid{
         squares = new ArrayList<>();
         maxInitValues = 5;
         filledSpaces = 0;
-        maxValue = 64;
+        maxValue = 2048;
         maxReached = false;
     }
 
@@ -106,6 +106,24 @@ public class GameGrid{
                 break;
             case 32:
                 img = context.getDrawable(R.drawable.green_square_32);
+                break;
+            case 64:
+                img = context.getDrawable(R.drawable.green_square_64);
+                break;
+            case 128:
+                img = context.getDrawable(R.drawable.green_square_128);
+                break;
+            case 256:
+                img = context.getDrawable(R.drawable.green_square_256);
+                break;
+            case 512:
+                img = context.getDrawable(R.drawable.green_square_512);
+                break;
+            case 1024:
+                img = context.getDrawable(R.drawable.green_square_1024);
+                break;
+            case 2048:
+                img = context.getDrawable(R.drawable.green_square_2048);
                 break;
             default:
                 img = context.getDrawable(R.drawable.green_square_max);
