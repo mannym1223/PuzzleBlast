@@ -3,17 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HighScoreActivity"
-    >
+    android:background="@color/colorGridBackground"
+    tools:context=".HighScoreActivity">
 
     <ListView
         android:id="@+id/gameScoreListView"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="match_parent"
         android:layout_below="@id/textView2"
-        android:layout_centerVertical="true"
         android:layout_marginTop="46dp"
-        android:background="@android:color/darker_gray"
+        android:background="@color/colorPrimaryDark"
         android:footerDividersEnabled="true"
         android:headerDividersEnabled="true" />
 
@@ -22,8 +21,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         android:text="High Scores"
-        android:layout_marginTop="50dp" />
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>
