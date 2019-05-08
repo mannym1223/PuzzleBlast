@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements GameGrid.Listener
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
-
+    //end game dialog
     public void displayDialog(long score) {
         AlertDialog.Builder mBuild = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
