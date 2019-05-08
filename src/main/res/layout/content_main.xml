@@ -54,17 +54,6 @@
             android:textColor="@color/textColor" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/endGameText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Game in Progress"
-        android:textAlignment="center"
-        android:textColor="@color/colorPrimary"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
     <GridView
         android:id="@+id/boardView"
         android:layout_width="@dimen/grid_width"

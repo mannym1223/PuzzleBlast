@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements GameGrid.Listener
         grid.setContext(this);
         grid.setHelper(helper);
         grid.setTimer(timer);
-        grid.setEndingText(findViewById(R.id.endGameText));
 
         gridAdapter = new SquareGridAdapter(this);
         grid.setAdapter(gridAdapter);

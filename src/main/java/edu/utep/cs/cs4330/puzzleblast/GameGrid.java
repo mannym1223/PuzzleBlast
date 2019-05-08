@@ -487,10 +487,6 @@ public class GameGrid{
         timer = time;
     }
 
-    public void setEndingText(TextView text) {
-        endingText = text;
-    }
-
     public List<Square> getSquares() {
         return squares;
     }
