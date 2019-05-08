@@ -25,6 +25,7 @@ public class GameGrid{
     private GameTimer timer;
     private static int filledSpaces;
     private Animation expandAnim;
+    private Listener scoreListener;
 
     private static final int GAME_INCREMENT = 2;//base number for the game
 
@@ -35,6 +36,10 @@ public class GameGrid{
         filledSpaces = 0;
         maxValue = 2048;
         maxReached = false;
+    }
+
+    public interface Listener{
+        void gameEndScore(long score);
     }
 
     private static final GameGrid INSTANCE = new GameGrid();
@@ -129,7 +134,7 @@ public class GameGrid{
     }
 
     public void setEasyMode() {
-        maxValue = 128;
+        maxValue = 8;
     }
 
     public void setNormalMode() {
@@ -387,6 +392,7 @@ public class GameGrid{
     }
 
     private synchronized boolean reachedMax() {
+        Activity act = (Activity)context;
         if(maxReached) {
             return true;
         }
@@ -401,8 +407,13 @@ public class GameGrid{
     }
 
     private void addScore() {
+        Activity act = (Activity)context;
         timer.pauseTimer();
         helper.addScore(timer.getTimeRemaining());
+        act.runOnUiThread(() -> {
+            scoreListener.gameEndScore(timer.getTimeRemaining());
+        });
+        maxReached = false;
     }
 
     private synchronized void addSquares() {
@@ -441,6 +452,7 @@ public class GameGrid{
 
     public void setContext(Context context) {
         this.context = context;
+        scoreListener = (Listener) context;
         //animation
         expandAnim = AnimationUtils.loadAnimation(context, R.anim.animation_pop);
     }
