@@ -202,6 +202,8 @@ public class MainActivity extends AppCompatActivity implements GameGrid.Listener
     @Override
     public void endGameScore(long score) {
         displayDialog(score);
-        timer.resetTimer();
+        grid.resetBoard();
+        timer.pauseTimer();
+        timer = new GameTimer(300000, findViewById(R.id.scoreText));
     }
 }
