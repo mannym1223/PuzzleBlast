@@ -157,7 +157,7 @@ public class GameGrid{
     }
 
     public void setEasyMode() {
-        maxValue = 128;
+        maxValue = 16;
     }
 
     public void setNormalMode() {
