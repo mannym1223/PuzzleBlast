@@ -26,7 +26,6 @@ public class GameGrid{
     private GameTimer timer;
     private static int filledSpaces;
     private Animation expandAnim;
-    private TextView endingText;
     private Listener endGameListener;
 
     private static final int GAME_INCREMENT = 2;//base number for the game
@@ -101,10 +100,7 @@ public class GameGrid{
             }
             maxInitValues = 3;
             Activity act = (Activity)context;
-            act.runOnUiThread(() -> {
-                endingText.setText("Game in Progress");
-                adapter.notifyDataSetChanged();
-            });
+            act.runOnUiThread(() -> adapter.notifyDataSetChanged());
         });
         thread.start();
     }
