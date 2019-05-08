@@ -27,14 +27,43 @@
         android:text = "00:00"
         android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/playButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/textColor"
-        android:text="Play" />
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/playButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="10dp"
+            android:background="@color/colorPrimary"
+            android:text="Play"
+            android:textColor="@color/textColor" />
+
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="10dp"
+            android:background="@color/colorPrimary"
+            android:text="Reset"
+            android:textColor="@color/textColor" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/endGameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Game in Progress"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <GridView
         android:id="@+id/boardView"
