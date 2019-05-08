@@ -47,7 +47,9 @@ public class GameTimer {
     }
 
     public void pauseTimer(){
-        countDownTimer.cancel();
+        if(countDownTimer != null) {
+            countDownTimer.cancel();
+        }
         isRunning = false;
         timerText.setText("05:00");
     }
