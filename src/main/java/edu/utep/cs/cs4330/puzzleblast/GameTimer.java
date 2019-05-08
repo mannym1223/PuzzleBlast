@@ -49,6 +49,7 @@ public class GameTimer {
     public void pauseTimer(){
         countDownTimer.cancel();
         isRunning = false;
+        timerText.setText("05:00");
     }
 
     public void resumeTimer() {
