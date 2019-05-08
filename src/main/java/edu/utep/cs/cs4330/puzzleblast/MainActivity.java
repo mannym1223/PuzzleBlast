@@ -38,9 +38,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            Snackbar.make(view,
-                    "Opening High Score Activity", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
             Intent scoreIntent = new Intent(this, HighScoreActivity.class);
             startActivity(scoreIntent);
         });
