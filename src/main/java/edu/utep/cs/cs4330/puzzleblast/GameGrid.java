@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,13 +26,14 @@ public class GameGrid{
     private GameTimer timer;
     private static int filledSpaces;
     private Animation expandAnim;
+    private TextView endingText;
 
     private static final int GAME_INCREMENT = 2;//base number for the game
 
     private GameGrid() {
         gridSize = 4;
         squares = new ArrayList<>();
-        maxInitValues = 5;
+        maxInitValues = 4;
         filledSpaces = 0;
         maxValue = 2048;
         maxReached = false;
@@ -75,6 +77,33 @@ public class GameGrid{
         thread.start();
     }
 
+    public synchronized void resetBoard() {
+        maxInitValues = 4;
+        maxReached = false;
+        Thread thread = new Thread(() -> {
+            for(int i = 0; i < squares.size();i++) {
+                Square square = squares.get(i);
+                square.setImage(findImage(0));
+                square.setValue(0);
+                square.setAnim(null);
+            }
+            for (int i = 0; i < maxInitValues;i++) {
+                Random rand = new Random();
+                Square square = squares.get(rand.nextInt(squares.size()));
+                square.setValue(2);
+                square.setImage(findImage(2));
+                square.setAnim(expandAnim);
+            }
+            maxInitValues = 3;
+            Activity act = (Activity)context;
+            act.runOnUiThread(() -> {
+                endingText.setText("Game in Progress");
+                adapter.notifyDataSetChanged();
+            });
+        });
+        thread.start();
+    }
+
     private synchronized Drawable findImage(int value) {
         Drawable img;
 
@@ -85,17 +114,11 @@ public class GameGrid{
             case 2:
                 img = context.getDrawable(R.drawable.green_square_2);
                 break;
-            case 3:
-                img = context.getDrawable(R.drawable.green_square_3);
-                break;
             case 4:
                 img = context.getDrawable(R.drawable.green_square_4);
                 break;
             case 8:
                 img = context.getDrawable(R.drawable.green_square_8);
-                break;
-            case 9:
-                img = context.getDrawable(R.drawable.green_square_9);
                 break;
             case 16:
                 img = context.getDrawable(R.drawable.green_square_16);
@@ -394,9 +417,14 @@ public class GameGrid{
             if (squares.get(index).getValue() == maxValue) {
                 maxReached = true;
                 addScore();
+                Activity act = (Activity)context;
+                act.runOnUiThread(() -> {
+                    endingText.setText("You Win!" + " Score: " + String.valueOf(timer.getTimeRemaining()));
+                });
                 return true;
             }
         }
+
         return false;
     }
 
@@ -451,6 +479,10 @@ public class GameGrid{
 
     public void setTimer(GameTimer time) {
         timer = time;
+    }
+
+    public void setEndingText(TextView text) {
+        endingText = text;
     }
 
     public List<Square> getSquares() {
