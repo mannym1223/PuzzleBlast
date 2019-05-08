@@ -27,6 +27,7 @@ public class GameGrid{
     private static int filledSpaces;
     private Animation expandAnim;
     private TextView endingText;
+    private Listener endGameListener;
 
     private static final int GAME_INCREMENT = 2;//base number for the game
 
@@ -37,6 +38,10 @@ public class GameGrid{
         filledSpaces = 0;
         maxValue = 2048;
         maxReached = false;
+    }
+   //Listener for end game dialog
+    public interface Listener{
+        void endGameScore(long score);
     }
 
     private static final GameGrid INSTANCE = new GameGrid();
@@ -419,7 +424,7 @@ public class GameGrid{
                 addScore();
                 Activity act = (Activity)context;
                 act.runOnUiThread(() -> {
-                    endingText.setText("You Win!" + " Score: " + String.valueOf(timer.getTimeRemaining()));
+                    endGameListener.endGameScore(timer.getTimeRemaining());
                 });
                 return true;
             }
@@ -469,6 +474,7 @@ public class GameGrid{
 
     public void setContext(Context context) {
         this.context = context;
+        endGameListener = (Listener) context;
         //animation
         expandAnim = AnimationUtils.loadAnimation(context, R.anim.animation_pop);
     }

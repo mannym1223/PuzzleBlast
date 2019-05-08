@@ -1,19 +1,26 @@
 package edu.utep.cs.cs4330.puzzleblast;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +28,7 @@ import org.w3c.dom.Text;
 
 import java.util.concurrent.Callable;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GameGrid.Listener{
 
     private GameGrid grid;
     private GameDBHelper helper;
@@ -102,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRightTilt() {
                 sensText.setText("Right");
-                grid.shiftLeft();
+                grid.shiftRight();
             }
             @Override
             public void onUpTilt() {
@@ -165,5 +172,36 @@ public class MainActivity extends AppCompatActivity {
 
     public void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    //end game dialog
+    public void displayDialog(long score) {
+        AlertDialog.Builder mBuild = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View view = inflater.inflate(R.layout.game_end, null);
+
+        MediaPlayer mp = MediaPlayer.create(this, R.raw.tada);
+
+        TextView scoreTextView = view.findViewById(R.id.scoreTextView);
+        scoreTextView.setText(Long.toString(score));
+
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.animation);
+        ImageView gameEndImageView = view.findViewById(R.id.gameEndImageView);
+        gameEndImageView.setImageResource(R.drawable.green_square_max);
+
+        mBuild.setView(view)
+                .setNegativeButton("OK", (dialog, id) -> {
+
+                });
+
+        mBuild.show();
+        mp.start();
+        gameEndImageView.startAnimation(anim);
+    }
+
+    @Override
+    public void endGameScore(long score) {
+        displayDialog(score);
+        timer.resetTimer();
     }
 }
