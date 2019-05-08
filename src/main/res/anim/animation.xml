@@ -8,5 +8,4 @@
         android:startOffset="0"
         android:toDegrees="360"
         android:repeatCount="4"/>
-
 </set>
