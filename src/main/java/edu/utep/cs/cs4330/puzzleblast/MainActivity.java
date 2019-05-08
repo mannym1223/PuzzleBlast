@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private SquareGridAdapter gridAdapter;
     private GameTimer timer;
     private Button playButton;
+    private Button resetButton;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -45,10 +46,17 @@ public class MainActivity extends AppCompatActivity {
         GridView board = findViewById(R.id.boardView);
 
         playButton = findViewById(R.id.playButton);
+        resetButton = findViewById(R.id.resetButton);
 
-        timer = new GameTimer(120000, findViewById(R.id.scoreText));
+        timer = new GameTimer(300000, findViewById(R.id.scoreText));
 
         playButton.setOnClickListener(v -> timer.startGameTimer());
+        resetButton.setOnClickListener(v -> {
+            grid.resetBoard();
+            timer.pauseTimer();
+            timer = new GameTimer(300000, findViewById(R.id.scoreText));
+            grid.setTimer(timer);
+        });
 
         helper = new GameDBHelper(this);
 
@@ -57,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         grid.setContext(this);
         grid.setHelper(helper);
         grid.setTimer(timer);
+        grid.setEndingText(findViewById(R.id.endGameText));
 
         gridAdapter = new SquareGridAdapter(this);
         grid.setAdapter(gridAdapter);
