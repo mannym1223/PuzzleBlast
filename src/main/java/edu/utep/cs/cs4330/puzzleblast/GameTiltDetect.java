@@ -15,17 +15,10 @@ public class GameTiltDetect implements SensorEventListener {
     private Sensor magnetometer;
     private float[] accelerometerValues;
     private float[] magnometerValues;
-    private float azimuth;
-    private float pitch;
-    private float roll;
-    private float azimuth_last;
     private float roll_last;
     private float pitch_last;
-    private GameGrid grid;
 
     public GameTiltDetect(Context context){
-        grid = GameGrid.getInstance();
-
         sensorManager = (SensorManager) context.getApplicationContext().getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -69,13 +62,13 @@ public class GameTiltDetect implements SensorEventListener {
             if ((curTime - lastUpdate) > 100) {
                 lastUpdate = curTime;
 
-                azimuth = orientationValues[0];
-                pitch = orientationValues[1];
-                roll = orientationValues[2];
+                float azimuth = orientationValues[0];
+                float pitch = orientationValues[1];
+                float roll = orientationValues[2];
 
                 determineTilt(roll, roll_last, pitch, pitch_last);
 
-                azimuth_last = azimuth;
+                float azimuth_last = azimuth;
                 pitch_last = pitch;
                 roll_last = roll;
 
