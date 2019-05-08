@@ -42,7 +42,7 @@
         android:layout_marginBottom="20dp"
         android:textColor="@color/textColor"
         style="@android:style/TextAppearance.Medium"
-        android:text="HIGH SCORE:" />
+        android:text="SCORE:" />
 
     <TextView
         android:id="@+id/scoreTextView"
