@@ -47,7 +47,7 @@ public class GameTimer {
     }
 
     public void pauseTimer(){
-        //countDownTimer.cancel();
+        countDownTimer.cancel();
         isRunning = false;
     }
 
