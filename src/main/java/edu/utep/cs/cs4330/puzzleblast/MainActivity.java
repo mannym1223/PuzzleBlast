@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements GameGrid.Listener
     private SquareGridAdapter gridAdapter;
     private GameTimer timer;
     private Button playButton;
+    private Button resetButton;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -45,9 +46,6 @@ public class MainActivity extends AppCompatActivity implements GameGrid.Listener
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            Snackbar.make(view,
-                    "Opening High Score Activity", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
             Intent scoreIntent = new Intent(this, HighScoreActivity.class);
             startActivity(scoreIntent);
         });
@@ -55,10 +53,17 @@ public class MainActivity extends AppCompatActivity implements GameGrid.Listener
         GridView board = findViewById(R.id.boardView);
 
         playButton = findViewById(R.id.playButton);
+        resetButton = findViewById(R.id.resetButton);
 
-        timer = new GameTimer(120000, findViewById(R.id.scoreText));
+        timer = new GameTimer(300000, findViewById(R.id.scoreText));
 
         playButton.setOnClickListener(v -> timer.startGameTimer());
+        resetButton.setOnClickListener(v -> {
+            grid.resetBoard();
+            timer.pauseTimer();
+            timer = new GameTimer(300000, findViewById(R.id.scoreText));
+            grid.setTimer(timer);
+        });
 
         helper = new GameDBHelper(this);
 
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements GameGrid.Listener
         grid.setContext(this);
         grid.setHelper(helper);
         grid.setTimer(timer);
+        grid.setEndingText(findViewById(R.id.endGameText));
 
         gridAdapter = new SquareGridAdapter(this);
         grid.setAdapter(gridAdapter);
@@ -194,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements GameGrid.Listener
     }
 
     @Override
-    public void gameEndScore(long score) {
+    public void endGameScore(long score) {
         displayDialog(score);
         timer.resetTimer();
     }

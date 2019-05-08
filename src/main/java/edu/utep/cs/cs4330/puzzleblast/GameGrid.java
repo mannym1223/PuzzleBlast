@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,21 +26,22 @@ public class GameGrid{
     private GameTimer timer;
     private static int filledSpaces;
     private Animation expandAnim;
-    private Listener scoreListener;
+    private TextView endingText;
+    private Listener endGameListener;
 
     private static final int GAME_INCREMENT = 2;//base number for the game
 
     private GameGrid() {
         gridSize = 4;
         squares = new ArrayList<>();
-        maxInitValues = 5;
+        maxInitValues = 4;
         filledSpaces = 0;
         maxValue = 2048;
         maxReached = false;
     }
 
     public interface Listener{
-        void gameEndScore(long score);
+        void endGameScore(long score);
     }
 
     private static final GameGrid INSTANCE = new GameGrid();
@@ -76,6 +78,33 @@ public class GameGrid{
                 adapter.notifyDataSetChanged();
             });
             Log.d("init square", "finished making list");
+        });
+        thread.start();
+    }
+
+    public synchronized void resetBoard() {
+        maxInitValues = 4;
+        maxReached = false;
+        Thread thread = new Thread(() -> {
+            for(int i = 0; i < squares.size();i++) {
+                Square square = squares.get(i);
+                square.setImage(findImage(0));
+                square.setValue(0);
+                square.setAnim(null);
+            }
+            for (int i = 0; i < maxInitValues;i++) {
+                Random rand = new Random();
+                Square square = squares.get(rand.nextInt(squares.size()));
+                square.setValue(2);
+                square.setImage(findImage(2));
+                square.setAnim(expandAnim);
+            }
+            maxInitValues = 3;
+            Activity act = (Activity)context;
+            act.runOnUiThread(() -> {
+                endingText.setText("Game in Progress");
+                adapter.notifyDataSetChanged();
+            });
         });
         thread.start();
     }
@@ -128,7 +157,7 @@ public class GameGrid{
     }
 
     public void setEasyMode() {
-        maxValue = 8;
+        maxValue = 128;
     }
 
     public void setNormalMode() {
@@ -386,7 +415,6 @@ public class GameGrid{
     }
 
     private synchronized boolean reachedMax() {
-        Activity act = (Activity)context;
         if(maxReached) {
             return true;
         }
@@ -394,20 +422,20 @@ public class GameGrid{
             if (squares.get(index).getValue() == maxValue) {
                 maxReached = true;
                 addScore();
+                Activity act = (Activity)context;
+                act.runOnUiThread(() -> {
+                    endGameListener.endGameScore(timer.getTimeRemaining());
+                });
                 return true;
             }
         }
+
         return false;
     }
 
     private void addScore() {
-        Activity act = (Activity)context;
         timer.pauseTimer();
         helper.addScore(timer.getTimeRemaining());
-        act.runOnUiThread(() -> {
-            scoreListener.gameEndScore(timer.getTimeRemaining());
-        });
-        maxReached = false;
     }
 
     private synchronized void addSquares() {
@@ -446,7 +474,7 @@ public class GameGrid{
 
     public void setContext(Context context) {
         this.context = context;
-        scoreListener = (Listener) context;
+        endGameListener = (Listener) context;
         //animation
         expandAnim = AnimationUtils.loadAnimation(context, R.anim.animation_pop);
     }
@@ -457,6 +485,10 @@ public class GameGrid{
 
     public void setTimer(GameTimer time) {
         timer = time;
+    }
+
+    public void setEndingText(TextView text) {
+        endingText = text;
     }
 
     public List<Square> getSquares() {
