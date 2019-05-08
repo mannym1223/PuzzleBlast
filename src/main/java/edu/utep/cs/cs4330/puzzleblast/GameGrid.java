@@ -39,7 +39,7 @@ public class GameGrid{
         maxValue = 2048;
         maxReached = false;
     }
-
+   //Listener for end game dialog
     public interface Listener{
         void endGameScore(long score);
     }
