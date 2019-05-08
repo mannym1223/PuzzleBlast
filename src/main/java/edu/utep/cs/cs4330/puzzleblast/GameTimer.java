@@ -66,4 +66,8 @@ public class GameTimer {
     public long getTimeRemaining() {
         return timeRemaining;
     }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
 }
