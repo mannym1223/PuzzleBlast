@@ -90,17 +90,11 @@ public class GameGrid{
             case 2:
                 img = context.getDrawable(R.drawable.green_square_2);
                 break;
-            case 3:
-                img = context.getDrawable(R.drawable.green_square_3);
-                break;
             case 4:
                 img = context.getDrawable(R.drawable.green_square_4);
                 break;
             case 8:
                 img = context.getDrawable(R.drawable.green_square_8);
-                break;
-            case 9:
-                img = context.getDrawable(R.drawable.green_square_9);
                 break;
             case 16:
                 img = context.getDrawable(R.drawable.green_square_16);
