@@ -18,7 +18,9 @@ public class SwipeListener implements View.OnTouchListener {
         return gesture.onTouchEvent(event);
     }
 
-    //methods to be overriden
+    /**
+     * Swipe methods to overriden
+     */
     public void onSwipeLeft() {
     }
     public void onSwipeRight() {
@@ -33,6 +35,17 @@ public class SwipeListener implements View.OnTouchListener {
         private static final int SWIPE_DISTANCE_THRESHOLD = 100;
         private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
+        /**
+         * Determines the direction of the swipe depending on motion event readings.
+         * Velocity threshold compared to determine if to a swipe should be detected.
+         *
+         *
+         * @param e1 the motion event when down pressed
+         * @param e2 the motion event when up
+         * @param velocityX the velocity of the swipe in the x direction
+         * @param velocityY the velocity of the swipe in the y direction
+         * @return true or false if event was detected
+         */
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             double distanceX = e2.getX() - e1.getX();
