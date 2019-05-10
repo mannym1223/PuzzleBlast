@@ -22,6 +22,11 @@ public class GameDBHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Creates new sqli database to store user's scores.
+     *
+     * @param sqLiteDatabase the database to create
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String table = "CREATE TABLE " + TABLE_GAME + "(" +
@@ -39,6 +44,13 @@ public class GameDBHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+    /**
+     *
+     * Adds users score to the database,
+     * using cursor to retrieve query result used to replace minimum score
+     *
+     * @param score to be added to database
+     */
     public synchronized void addScore(long score) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -68,6 +80,12 @@ public class GameDBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Get the count of database entries.
+     *
+     * @return count entries in database
+     */
+
     public long getCount() {
         SQLiteDatabase db = this.getReadableDatabase();
         long count = DatabaseUtils.queryNumEntries(db, TABLE_GAME);
@@ -75,6 +93,12 @@ public class GameDBHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    /**
+     *
+     * Generate a cursor with all database scores
+     *
+     * @return cursor object containing the query of all database scores
+     */
     public Cursor allScores() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_GAME, null, null, null, null, null, COLUMN_SCORE+" DESC");
@@ -82,6 +106,11 @@ public class GameDBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    /**
+     * Delete entries from database provided the id
+     *
+     * @param id the id to be deleted
+     */
     public void delete(long id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_GAME, COLUMN_ID + " = ?", new String[] { Long.toString(id) } );
