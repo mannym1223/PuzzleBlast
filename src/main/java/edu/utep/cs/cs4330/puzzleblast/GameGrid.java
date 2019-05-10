@@ -49,6 +49,9 @@ public class GameGrid{
         return INSTANCE;
     }
 
+    /**
+     * Adds new values to the empty list of squares
+     */
     public synchronized void initSquares() {
         Thread thread = new Thread(() -> {
             int count = 0;
@@ -81,6 +84,10 @@ public class GameGrid{
         thread.start();
     }
 
+    /**
+     * Sets the values of all the squares to 0 then adds some new values
+     * in random locations
+     */
     public synchronized void resetBoard() {
         maxInitValues = 4;
         maxReached = false;
@@ -105,6 +112,11 @@ public class GameGrid{
         thread.start();
     }
 
+    /**
+     * Finds and returns an image that matches the corresponding given value
+     * @param value int
+     * @return Drawable
+     */
     private synchronized Drawable findImage(int value) {
         Drawable img;
 
@@ -152,23 +164,24 @@ public class GameGrid{
         return img;
     }
 
+    /**
+     * Sets game to easy mode by changing max value
+     */
     public void setEasyMode() {
         maxValue = 16;
     }
 
+    /**
+     * Sets game to normal mode by changing max value
+     */
     public void setNormalMode() {
         maxValue = 2048;
     }
 
-    private boolean isFilled() {
-        if(filledSpaces == gridSize * gridSize) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
+    /**
+     * Shifts all the squares in the list so that they are all moved to the
+     * left in the the 2 dimensional grid
+     */
     public synchronized void shiftLeft() {
         Thread thread = new Thread(() -> {
             for(int index = 0; index < squares.size()-1;index++) {
@@ -232,6 +245,10 @@ public class GameGrid{
         thread.start();
     }
 
+    /**
+     * Shifts all the squares in the list so that they are all moved to the
+     * right in the the 2 dimensional grid
+     */
     public synchronized void shiftRight() {
         Thread thread = new Thread(() -> {
             for(int index = squares.size()-1; index > 0;index--) {
@@ -292,6 +309,10 @@ public class GameGrid{
         thread.start();
     }
 
+    /**
+     * Shifts all the squares in the list so that they are all moved upward
+     * in the the 2 dimensional grid
+     */
     public synchronized void shiftUp() {
         Thread thread = new Thread(() -> {
             for(int index = 0; index < squares.size()-gridSize;index++) {
@@ -351,6 +372,10 @@ public class GameGrid{
         thread.start();
     }
 
+    /**
+     * Shifts all the squares in the list so that they are all moved downward
+     * in the the 2 dimensional grid
+     */
     public synchronized void shiftDown() {
         Thread thread = new Thread(() -> {
             for(int index = squares.size()-1; index >= gridSize;index--) {
@@ -410,6 +435,11 @@ public class GameGrid{
         thread.start();
     }
 
+    /**
+     * Determines whether the max value has been reached
+     * then notifies the activity if it has
+     * @return boolean
+     */
     private synchronized boolean reachedMax() {
         if(maxReached) {
             return true;
@@ -429,11 +459,18 @@ public class GameGrid{
         return false;
     }
 
+    /**
+     * Adds the current score to the database
+     */
     private void addScore() {
         timer.pauseTimer();
         helper.addScore(timer.getTimeRemaining());
     }
 
+    /**
+     * Adds a random amount of new squares in a random location
+     * on the grid
+     */
     private synchronized void addSquares() {
         int count = 0;
         Random rand = new Random();
@@ -490,12 +527,12 @@ public class GameGrid{
         return maxReached;
     }
 
+    /**
+     * Returns a value of either zero or 2 randomly
+     * @return
+     */
     private int randomValue() {
         Random rand = new Random();
         return rand.nextInt(2) * GAME_INCREMENT;
-    }
-
-    public void showToast(Context context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 }
