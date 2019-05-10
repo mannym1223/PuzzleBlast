@@ -22,6 +22,14 @@ public class GameScoreCursorAdapter extends CursorAdapter {
         return LayoutInflater.from(context).inflate(R.layout.score_layout, parent, false);
     }
 
+    /**
+     * Sets the view elements based on cursor set.
+     * Represents scores and timestamps of the game.
+     *
+     * @param view the view to be updated
+     * @param context the context of the application
+     * @param cursor the query set stored
+     */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         scoreTextView = view.findViewById(R.id.scoreTextView);
