@@ -27,12 +27,26 @@ public class GameTiltDetect implements SensorEventListener {
 
     }
 
-
+    /**
+     * Initialize sensor listeners, using SensorManager to register device sensors.
+     *
+     */
     public void initListeners() {
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+    /**
+     *
+     * Gets the sensor type provided by the sensor event.
+     * Creates a rotation matrix to map device coordinates.
+     * Creates a orientation matrix to map device's relative position.
+     * Determines the sensor type and stores readings in their respective arrays
+     * Provides an interval of 100 milliseconds and compares the current sensor readings to previous
+     * Obtains the pitch and roll values from orientation matrix.
+     *
+     * @param event the sensor event from the device
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
         int sensorType = event.sensor.getType();
@@ -81,6 +95,16 @@ public class GameTiltDetect implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
+    /**
+     *
+     * Converts roll and pitch readings into their respective angles
+     * Checks to see which direction the device is tilted based on the roll and pitch angles
+     *
+     * @param roll the current roll value of sensor reading
+     * @param roll_last the previous roll value of sensor reading
+     * @param pitch  the current pitch value of sensor reading
+     * @param pitch_last the previous pitch value of sensor reading
+     */
     public void determineTilt(float roll, float roll_last, float pitch, float pitch_last) {
         float degrRoll = (float) (Math.toDegrees(roll));
         float degrPitch = (float) (Math.toDegrees(pitch));
@@ -116,6 +140,10 @@ public class GameTiltDetect implements SensorEventListener {
 
     }
 
+    /**
+     * To be overriden called to update grid depending on direction of the tilt
+     *
+     */
     public void onLeftTilt() {
 
     }
